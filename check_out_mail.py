@@ -55,12 +55,16 @@ while 1:
     response = sess.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
     maybe_offwork = soup.find_all("tr")[-2].find_all("td")
-    if maybe_offwork[1].text == "下班簽退":
-        content = "!狂賀!!恭喜下班!!!" + "\n時間:" + maybe_offwork[2].text +"\n地點:" + maybe_offwork[-3].text
-        send_email("通知:" + maybe_offwork[0].text + "下班簽退@" + maybe_offwork[2].text, content)
-        #print(content)
-        break;
+    maybe_onwork = soup.find_all("tr")[4].find_all("td")
+    if maybe_onwork[1].text == "上班簽到":
+        if maybe_offwork[1].text == "下班簽退":
+            content = "!狂賀!!恭喜下班!!!" + "\n時間:" + maybe_offwork[2].text +"\n地點:" + maybe_offwork[-3].text
+            send_email("通知:" + maybe_offwork[0].text + "下班簽退@" + maybe_offwork[2].text, content)
+            #print(content)
+            break
+    else:
+        break
 
-    time.sleep(20)  
+    time.sleep(10)  
     
 print("已打卡!")
