@@ -24,7 +24,7 @@ def send_email(subject, content):
         smtp.login(gmailUser, gmailPass)  # 登入寄件者gmail
 
         # send mail
-        smtp.sendmail(message["From"], message["To"], message.as_string())
+        smtp.sendmail(message["From"], to, message.as_string())
         
 #get session at 9/18/2020 8:47PM
 s_account = json.load(open("./sAccount.json", "r", encoding="utf-8"))
