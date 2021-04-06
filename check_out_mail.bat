@@ -1,2 +1,2 @@
-cd /d D:\py\SFTool
-python check_out_mail.py
+cd /d %~dp0
+python "%~dp0check_out_mail.py" >> "%~dp0log.log"
