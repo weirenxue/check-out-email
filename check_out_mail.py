@@ -6,11 +6,13 @@ from email.mime.text import MIMEText
 import json
 from datetime import datetime
 
+config = json.load(open("./config.json", "r", encoding="utf-8"))
+
 def send_email(subject, content):
-        sender = json.load(open("./mailFrom.json", "r", encoding="utf-8"))
+        sender = config["mailFrom"]
         gmailUser = sender["account"]
         gmailPass = sender["password"]
-        to = json.load(open("./mailTo.json", "r", encoding="utf-8"))
+        to = config["mailTo"]
 
         # create message
         message = MIMEText(content, "plain", "utf-8")
@@ -29,7 +31,7 @@ def send_email(subject, content):
 
 try:
     #get session at 9/18/2020 8:47PM
-    s_account = json.load(open("./sAccount.json", "r", encoding="utf-8"))
+    s_account = config["sAccount"]
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36",}
     payload = {"userid":s_account["account"], "password":s_account["password"], "submit":"登入", "refer":"https://pv.ncnu.edu.tw/EIP/Login/LoginGetNCNU.resource.aspx"}
 
@@ -47,7 +49,6 @@ try:
         url = "https://pv.ncnu.edu.tw/EIP/Resource/Dashboard_ncnu.resource.aspx"
         response = sess.get(url)
         soup = BeautifulSoup(response.text, "html.parser")
-        
         today_last_td = None
         for this_tr in soup.find(id = "PersonalDuty_DataGrid").find_all("tr"):
             if(this_tr.find_all("td")[0].text == datetime.now().strftime("%Y-%m-%d")):
